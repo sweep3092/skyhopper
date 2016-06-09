@@ -139,6 +139,26 @@ module Node::Attribute
         recipes: ['recipe[mysql::client]', 'recipe[mysql::server]'],
         description: 'MySQL password',
       },
+      'zabbix/agent/version': {
+        type: String,
+        recipes: ['role[zabbix_server]', 'role[zabbix_agent]'],
+        description: 'Zabbix Agent version',
+      },
+      'zabbix/server/version': {
+        type: String,
+        recipes: ['role[zabbix_server]'],
+        description: 'Zabbix Server version',
+      },
+      'zabbix/sender/version': {
+        type: String,
+        recipes: ['role[zabbix_server]'],
+        description: 'Zabbix Sender version',
+      },
+      'zabbix/package/rpm': {
+        type: String,
+        recipes: ['role[zabbix_server]', 'role[zabbix_agent]'],
+        description: 'URL for Zabbix release package',
+      },
     }
   end
 
