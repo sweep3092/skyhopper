@@ -34,6 +34,7 @@ class ChefServer::Deployment
   TrustedCertsPemID = "TrustedCerts".freeze
 
   class Error < StandardError; end
+  class ChefServerConstructionError < Error; end
 
 
   class << self
@@ -173,6 +174,7 @@ class ChefServer::Deployment
   def init_knife_rb
     stack = Stack.new(@infra)
     output = JSON.parse(stack.outputs.first.output_value)
+    raise ChefServerConstructionError if output.empty?
 
     # TODO: 直接~/.chef/下に鍵を作る path = Pathname.new(File.expand_path('~/.chef/'))
     #       開発環境で上書きされないようにするのはどうする?

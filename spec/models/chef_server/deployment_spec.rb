@@ -147,4 +147,25 @@ describe ChefServer::Deployment, type: :model do
       expect(subject.instance_variable_get(:@fqdn)).to eq ip_addr
     end
   end
+
+  describe '#init_knife_rb' do
+    let(:infra){create(:infrastructure)}
+    let(:physical_id){'i-fugafuga'}
+    let(:stack) { double(:stack) }
+    subject{klass.new(infra, physical_id)}
+
+    before do
+      allow(Stack).to receive(:new).and_return(stack)
+    end
+
+    context 'when output is empty' do
+      before do
+        allow(stack).to receive_message_chain(:outputs, :first, :output_value).and_return('{}')
+      end
+
+      it 'should raise error' do
+        expect{subject.init_knife_rb}.to raise_error ChefServer::Deployment::Error
+      end
+    end
+  end
 end
